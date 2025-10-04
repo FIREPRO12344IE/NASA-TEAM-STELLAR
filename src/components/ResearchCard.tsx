@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, ChevronDown, ChevronUp, Leaf, Bug, Microscope } from 'lucide-react';
+import { ExternalLink, ChevronDown, ChevronUp, Leaf, Bug, Microscope, Info } from 'lucide-react';
 import { ResearchPaper } from '@/types/dashboard';
 
 interface ResearchCardProps {
   paper: ResearchPaper;
+  onViewDetails: (paper: ResearchPaper) => void;
 }
 
-export function ResearchCard({ paper }: ResearchCardProps) {
+export function ResearchCard({ paper, onViewDetails }: ResearchCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const getOrganismIcon = () => {
@@ -119,18 +120,32 @@ export function ResearchCard({ paper }: ResearchCardProps) {
               ))}
             </div>
 
-            <Button
-              variant="default"
-              size="sm"
-              className="w-full mt-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(pubmedUrl, '_blank');
-              }}
-            >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              View Full Publication
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="default"
+                size="sm"
+                className="flex-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewDetails(paper);
+                }}
+              >
+                <Info className="h-4 w-4 mr-2" />
+                View Details
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(pubmedUrl, '_blank');
+                }}
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                PubMed
+              </Button>
+            </div>
           </div>
         )}
       </CardContent>

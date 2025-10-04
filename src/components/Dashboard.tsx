@@ -7,6 +7,7 @@ import { Download, TrendingUp, Users, BookOpen, Microscope } from 'lucide-react'
 import { FilterState, ResearchPaper } from '@/types/dashboard';
 import { ResearchCard } from './ResearchCard';
 import { AISummaryCard } from './AISummaryCard';
+import { PaperDetailModal } from './PaperDetailModal';
 
 interface DashboardProps {
   papers: ResearchPaper[];
@@ -21,6 +22,14 @@ interface DashboardProps {
 }
 
 export function Dashboard({ papers, filters, aiFilteredPaperIds, searchResult, isSearching }: DashboardProps) {
+  const [selectedPaper, setSelectedPaper] = useState<ResearchPaper | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewDetails = (paper: ResearchPaper) => {
+    setSelectedPaper(paper);
+    setIsModalOpen(true);
+  };
+
   const filteredPapers = useMemo(() => {
     let filtered = papers.filter(paper => {
       const matchesOrganism = filters.organismType.length === 0 || 
@@ -334,23 +343,30 @@ export function Dashboard({ papers, filters, aiFilteredPaperIds, searchResult, i
           </CardHeader>
           <CardContent>
             <div className="space-y-4 max-h-300 overflow-y-auto">
-              {impactData.slice(0, 6).map((paper, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">
-                      {paper.title}
-                    </p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Badge variant="secondary" className="text-xs">
-                        Impact: {paper.impact}
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {paper.citations} citations
-                      </Badge>
+              {impactData.slice(0, 6).map((paper, index) => {
+                const fullPaper = filteredPapers.find(p => p.title.startsWith(paper.title.slice(0, 30)));
+                return (
+                  <div 
+                    key={index} 
+                    className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 cursor-pointer transition-all hover:shadow-md"
+                    onClick={() => fullPaper && handleViewDetails(fullPaper)}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {paper.title}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant="secondary" className="text-xs">
+                          Impact: {paper.impact}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {paper.citations} citations
+                        </Badge>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>
@@ -365,11 +381,18 @@ export function Dashboard({ papers, filters, aiFilteredPaperIds, searchResult, i
         <CardContent>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {filteredPapers.slice(0, 6).map((paper) => (
-              <ResearchCard key={paper.id} paper={paper} />
+              <ResearchCard key={paper.id} paper={paper} onViewDetails={handleViewDetails} />
             ))}
           </div>
         </CardContent>
       </Card>
+
+      {/* Paper Detail Modal */}
+      <PaperDetailModal
+        paper={selectedPaper}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
     </div>
   );
 }
