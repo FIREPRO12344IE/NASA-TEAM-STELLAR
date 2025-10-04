@@ -5,7 +5,11 @@ import { Upload, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-export function CSVImporter() {
+interface CSVImporterProps {
+  compact?: boolean;
+}
+
+export function CSVImporter({ compact = false }: CSVImporterProps) {
   const [isImporting, setIsImporting] = useState(false);
   const { toast } = useToast();
 
@@ -58,7 +62,39 @@ export function CSVImporter() {
     }
   };
 
-  return (
+  return compact ? (
+    <div className="space-y-3">
+      <Button
+        onClick={() => document.getElementById('csv-upload-compact')?.click()}
+        disabled={isImporting}
+        variant="outline"
+        size="sm"
+        className="w-full text-xs"
+      >
+        {isImporting ? (
+          <>
+            <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+            Importing...
+          </>
+        ) : (
+          <>
+            <Upload className="mr-2 h-3 w-3" />
+            Upload CSV
+          </>
+        )}
+      </Button>
+      <input
+        id="csv-upload-compact"
+        type="file"
+        accept=".csv"
+        onChange={handleFileUpload}
+        className="hidden"
+      />
+      <p className="text-xs text-muted-foreground">
+        Upload NASA publications CSV
+      </p>
+    </div>
+  ) : (
     <Card className="mb-6">
       <CardHeader>
         <CardTitle>Import NASA Publications</CardTitle>

@@ -6,14 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Download, TrendingUp, Users, BookOpen, Microscope } from 'lucide-react';
 import { FilterState, ResearchPaper } from '@/types/dashboard';
 import { ResearchCard } from './ResearchCard';
+import { AISummaryCard } from './AISummaryCard';
 
 interface DashboardProps {
   papers: ResearchPaper[];
   filters: FilterState;
   aiFilteredPaperIds?: string[] | null;
+  searchResult?: {
+    summary?: string;
+    explanation?: string;
+    paperIds: string[];
+  } | null;
+  isSearching: boolean;
 }
 
-export function Dashboard({ papers, filters, aiFilteredPaperIds }: DashboardProps) {
+export function Dashboard({ papers, filters, aiFilteredPaperIds, searchResult, isSearching }: DashboardProps) {
   const filteredPapers = useMemo(() => {
     let filtered = papers.filter(paper => {
       const matchesOrganism = filters.organismType.length === 0 || 
@@ -104,15 +111,42 @@ export function Dashboard({ papers, filters, aiFilteredPaperIds }: DashboardProp
     <div className="p-6 space-y-6">
       {/* Intro Section */}
       {!filters.searchQuery && (
-        <div className="text-center mb-8 space-y-3 py-6">
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-nasa-orange via-nasa-blue to-nasa-green bg-clip-text text-transparent">
+        <div className="text-center mb-12 space-y-4 py-12">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-nasa-orange via-nasa-blue to-nasa-green bg-clip-text text-transparent">
             Explore NASA's Space Biology Research
           </h2>
-          <p className="text-lg text-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-foreground max-w-4xl mx-auto leading-relaxed">
             Discover decades of groundbreaking space biology and physical sciences research with AI-powered insights. 
             Search across hundreds of experiments and instantly reveal trends, patterns, and scientific breakthroughs.
           </p>
+          <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm pt-4">
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-nasa-orange animate-pulse"></div>
+              <span>AI-Powered</span>
+            </div>
+            <div className="w-1 h-1 rounded-full bg-muted-foreground"></div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-nasa-blue animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+              <span>Real-Time Insights</span>
+            </div>
+            <div className="w-1 h-1 rounded-full bg-muted-foreground"></div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-nasa-green animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+              <span>608 Publications</span>
+            </div>
+          </div>
         </div>
+      )}
+
+      {/* AI Search Results - Only show when searching or have results */}
+      {(filters.searchQuery || isSearching) && (
+        <AISummaryCard
+          summary={searchResult?.summary}
+          explanation={searchResult?.explanation}
+          isSearching={isSearching}
+          hasResults={!!searchResult && searchResult.paperIds.length > 0}
+          searchQuery={filters.searchQuery}
+        />
       )}
 
       {/* Enhanced Header Stats */}

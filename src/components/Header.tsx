@@ -20,8 +20,8 @@ export function Header({ onSearchChange, searchQuery, onMenuToggle, isAISearchin
   };
 
   return (
-    <header className="bg-card border-b border-border sticky top-0 z-50 backdrop-blur-sm">
-      <div className="flex items-center justify-between px-6 py-4">
+    <header className="bg-card border-b border-border sticky top-0 z-50 backdrop-blur-sm shadow-sm">
+      <div className="flex items-center justify-between px-6 py-5">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
@@ -49,18 +49,18 @@ export function Header({ onSearchChange, searchQuery, onMenuToggle, isAISearchin
           </div>
         </div>
 
-        <div className="flex items-center gap-4 flex-1 max-w-md mx-8">
-          <div className="relative flex-1 search-enhanced rounded-md">
+        <div className="flex items-center gap-4 flex-1 max-w-2xl mx-8">
+          <div className="relative flex-1 search-enhanced rounded-lg shadow-sm">
             {isAISearching ? (
-              <Sparkles className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-nasa-orange animate-pulse transition-colors duration-300" />
+              <Sparkles className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-nasa-orange animate-pulse transition-colors duration-300" />
             ) : (
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors duration-300" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors duration-300" />
             )}
             <Input
               placeholder="Search anything: missions, organisms, experiments, authors..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 bg-muted/30 border-border hover:bg-muted/50 focus:bg-card transition-all duration-300 text-base"
+              className="pl-12 pr-4 py-6 bg-muted/30 border-border hover:bg-muted/50 focus:bg-card transition-all duration-300 text-base focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </div>

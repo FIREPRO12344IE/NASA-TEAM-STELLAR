@@ -4,8 +4,6 @@ import { Sidebar } from '@/components/Sidebar';
 import { Dashboard } from '@/components/Dashboard';
 import { Footer } from '@/components/Footer';
 import { WelcomeAnimation } from '@/components/WelcomeAnimation';
-import { CSVImporter } from '@/components/CSVImporter';
-import { AISummaryCard } from '@/components/AISummaryCard';
 import { FilterState } from '@/types/dashboard';
 import { sampleResearchPapers } from '@/data/sampleData';
 import { useAISearch } from '@/hooks/useAISearch';
@@ -74,22 +72,12 @@ export function DashboardPage() {
         />
         
         <main className="flex-1 overflow-auto">
-          <div className="container mx-auto p-6 space-y-6">
-            <CSVImporter />
-            
-            <AISummaryCard
-              summary={searchResult?.summary}
-              explanation={searchResult?.explanation}
-              isSearching={isSearching}
-              hasResults={!!searchResult && searchResult.paperIds.length > 0}
-              searchQuery={filters.searchQuery}
-            />
-          </div>
-          
           <Dashboard 
             papers={displayPapers}
             filters={filters}
             aiFilteredPaperIds={aiFilteredPaperIds}
+            searchResult={searchResult}
+            isSearching={isSearching}
           />
         </main>
       </div>

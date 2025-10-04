@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronRight, Filter, X, Leaf, Bug, Microscope, Beaker, Rocket, Calendar } from 'lucide-react';
+import { ChevronDown, ChevronRight, Filter, X, Leaf, Bug, Microscope, Beaker, Rocket, Calendar, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Card } from '@/components/ui/card';
 import { FilterState } from '@/types/dashboard';
 import { organismTypes, experimentTypes, missions } from '@/data/sampleData';
+import { CSVImporter } from './CSVImporter';
 
 interface SidebarProps {
   filters: FilterState;
@@ -13,6 +14,34 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const CollapsibleUploader = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  return (
+    <div className="border-b border-border">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <Upload className="h-4 w-4 text-nasa-orange" />
+          <span className="font-medium text-foreground text-sm">Upload Data</span>
+        </div>
+        {isExpanded ? (
+          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+        ) : (
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        )}
+      </button>
+      {isExpanded && (
+        <div className="px-4 pb-4">
+          <CSVImporter compact />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export function Sidebar({ filters, onFiltersChange, isOpen, onClose }: SidebarProps) {
   const [expandedSections, setExpandedSections] = useState({
@@ -101,10 +130,10 @@ export function Sidebar({ filters, onFiltersChange, isOpen, onClose }: SidebarPr
       
       {/* Sidebar */}
       <aside className={`
-        fixed top-[73px] left-0 h-[calc(100vh-73px)] w-80 bg-card border-r border-border z-50
+        fixed top-[80px] left-0 h-[calc(100vh-80px)] w-80 bg-card border-r border-border z-50
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        md:relative md:top-0 md:h-[calc(100vh-73px)] md:translate-x-0
+        md:relative md:top-0 md:h-[calc(100vh-80px)] md:translate-x-0
         overflow-y-auto
       `}>
         <div className="p-4 border-b border-border">
@@ -135,6 +164,8 @@ export function Sidebar({ filters, onFiltersChange, isOpen, onClose }: SidebarPr
         </div>
 
         <div className="divide-y divide-border">
+          <CollapsibleUploader />
+          
           <FilterSection 
             title="Organism Type" 
             section="organism"
