@@ -102,6 +102,18 @@ export function Dashboard({ papers, filters, aiFilteredPaperIds }: DashboardProp
 
   return (
     <div className="p-6 space-y-6">
+      {/* Intro Section */}
+      {!filters.searchQuery && (
+        <div className="text-center mb-8 space-y-3 py-6">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-nasa-orange via-nasa-blue to-nasa-green bg-clip-text text-transparent">
+            Explore NASA's Space Biology Research
+          </h2>
+          <p className="text-lg text-foreground max-w-3xl mx-auto leading-relaxed">
+            Discover decades of groundbreaking space biology and physical sciences research with AI-powered insights. 
+            Search across hundreds of experiments and instantly reveal trends, patterns, and scientific breakthroughs.
+          </p>
+        </div>
+      )}
 
       {/* Enhanced Header Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

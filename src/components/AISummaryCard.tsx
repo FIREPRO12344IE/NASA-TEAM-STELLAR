@@ -53,25 +53,21 @@ export function AISummaryCard({
               </div>
             ) : summary ? (
               <div className="space-y-3">
-                <p className="text-base leading-relaxed">{summary}</p>
+                <p className="text-base leading-relaxed font-medium">{summary}</p>
                 {explanation && (
-                  <p className="text-sm text-muted-foreground italic">
+                  <p className="text-sm text-muted-foreground">
                     {explanation}
                   </p>
                 )}
                 {!hasResults && (
-                  <div className="mt-3 p-3 bg-muted/50 rounded-lg">
-                    <p className="text-sm text-muted-foreground">
-                      💡 Try broader search terms or explore using the filters below
+                  <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                    <p className="text-sm text-foreground">
+                      💡 <strong>No direct results found</strong>, but here's what we found related to your query. Try broader search terms or explore using the filters on the left.
                     </p>
                   </div>
                 )}
               </div>
-            ) : (
-              <p className="text-muted-foreground">
-                Enter a search query to get AI-powered insights into NASA's space biology research.
-              </p>
-            )}
+            ) : null}
           </div>
         </div>
       </Card>

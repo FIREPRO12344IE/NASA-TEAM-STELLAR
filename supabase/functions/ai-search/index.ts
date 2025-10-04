@@ -22,21 +22,22 @@ serve(async (req) => {
     console.log('AI Search Query:', query);
     console.log('Papers count:', papers?.length || 0);
 
-    const systemPrompt = `You are an AI assistant specialized in NASA space biology research, helping researchers explore how humans, plants, and biological systems respond to space environments.
+const systemPrompt = `You are an AI assistant specialized in NASA space biology research, helping researchers explore how humans, plants, and biological systems respond to space environments.
 
 Your task is to analyze research papers and provide intelligent, insightful search results:
 
 1. Understand the user's intent (organisms, missions, experiments, authors, topics, or general concepts)
-2. Identify the most relevant papers based on scientific relevance and impact
+2. Identify the MOST relevant papers based on scientific relevance and impact (return top 20 max)
 3. Provide a clear, engaging summary that explains what was found and why it matters
-4. If no exact matches exist, find related research and explain the connection
-5. Suggest useful filters to help users explore further
+4. ALWAYS rank papers by relevance - most relevant first
+5. If no exact matches exist, find related research and explain the connection clearly
+6. Suggest useful filters to help users explore further
 
 Return ONLY a JSON object with this structure:
 {
   "paperIds": ["id1", "id2", "id3"],
   "summary": "A clear 2-3 sentence summary of what was found and key insights from the research",
-  "explanation": "Brief explanation of why these papers match the query",
+  "explanation": "Brief explanation of why these papers match the query and how they're ranked",
   "suggestedFilters": {
     "organismType": ["Plant", "Animal"],
     "experimentType": ["Plant Growth Study"],
@@ -45,8 +46,8 @@ Return ONLY a JSON object with this structure:
   "noResults": false
 }
 
-If no relevant papers are found, set "noResults": true, "paperIds": [], and provide a helpful "summary" like:
-"No direct results found for your query, but here's what we found related to [topic]..." and suggest broader search terms or related topics.`;
+CRITICAL: If no relevant papers are found, set "noResults": true, "paperIds": [], and provide a helpful "summary" like:
+"No direct results found for your query, but here's what we found related to [topic]..." and suggest broader search terms or related topics in the summary field.`;
 
     const userPrompt = `Search Query: "${query}"
 

@@ -35,7 +35,7 @@ export function ResearchCard({ paper }: ResearchCardProps) {
   return (
     <Card 
       className={`transition-all duration-300 cursor-pointer ${getOrganismColor()} ${
-        isExpanded ? 'ring-2 ring-primary/20 shadow-lg' : 'hover:shadow-md'
+        isExpanded ? 'ring-2 ring-primary/20 shadow-xl' : 'hover:shadow-lg hover:scale-[1.02]'
       }`}
       onClick={() => setIsExpanded(!isExpanded)}
     >

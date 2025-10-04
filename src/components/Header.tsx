@@ -35,15 +35,15 @@ export function Header({ onSearchChange, searchQuery, onMenuToggle, isAISearchin
           <div className="flex items-center gap-3">
             <img 
               src={nasaLogo} 
-              alt="NASA Lifelens" 
-              className="h-8 w-8 rounded-full"
+              alt="NASA STELLAR" 
+              className="h-10 w-10 rounded-full"
             />
             <div>
-            <h1 className="text-2xl nasa-title">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-nasa-orange via-nasa-blue to-nasa-green bg-clip-text text-transparent">
                 NASA STELLAR
               </h1>
-              <p className="text-xs text-muted-foreground hidden sm:block">
-                Space Biology Research Intelligence
+              <p className="text-xs text-muted-foreground hidden sm:block font-medium">
+                AI Space Biology Insights
               </p>
             </div>
           </div>
@@ -57,10 +57,10 @@ export function Header({ onSearchChange, searchQuery, onMenuToggle, isAISearchin
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors duration-300" />
             )}
             <Input
-              placeholder="AI-powered search: papers, experiments, organisms..."
+              placeholder="Search anything: missions, organisms, experiments, authors..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 bg-muted/30 border-border hover:bg-muted/50 focus:bg-card transition-all duration-300"
+              className="pl-10 bg-muted/30 border-border hover:bg-muted/50 focus:bg-card transition-all duration-300 text-base"
             />
           </div>
         </div>
